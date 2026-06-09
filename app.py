@@ -138,4 +138,58 @@ if school_choice != "Select a school...":
     st.write(f"## 🍳 {school_choice} Kitchen Dashboard")
     
     expected_diners = student_count * (attendance / 100.0)
-    menu_
+    menu_factor = 1.00
+    
+    # Specific targeted profile logic matching preset arrays
+    if school_id == "shg":
+        if menu_choice == "Githeri": menu_factor = 0.60  
+        elif menu_choice in ["Ugali & Bitterherbs", "Ugali & Cabbage"]: menu_factor = 0.65  
+        elif "Pilau" in menu_choice: menu_factor = 1.20  
+        elif "Rice" in menu_choice: menu_factor = 1.10
+    elif school_id == "ahs":
+        if "Beef" in menu_choice or "Meat" in menu_choice: menu_factor = 1.15
+    elif school_id == "stg":
+        if "Chapati" in menu_choice: menu_factor = 1.25
+        elif "Vegetables" in menu_choice or "Sukuma" in menu_choice: menu_factor = 0.85
+    elif school_id == "len":
+        if "Njahi" in menu_choice: menu_factor = 0.80
+        elif "Meat" in menu_choice: menu_factor = 1.15
+    elif school_id == "nch":
+        if "Chicken" in menu_choice or "Special" in menu_choice: menu_factor = 1.20
+
+    # Pattern scan for fallback typed inputs
+    if menu_mode == "Type Custom Menu Manually":
+        if any(keyword in menu_choice.lower() for keyword in ["chapati", "chicken", "meat", "beef", "pilau"]):
+            menu_factor = 1.15
+            st.info("💡 Custom Menu Analysis: High popularity keywords detected. Turnout baseline increased by 15%.")
+        elif any(keyword in menu_choice.lower() for keyword in ["cabbage", "greens", "njahi", "bitterherbs"]):
+            menu_factor = 0.80
+            st.info("💡 Custom Menu Analysis: Lower preference profile keywords detected. Baseline safely optimized downward by 20%.")
+
+    # Final calculations
+    waste_trim = 1.0 - (historical_waste / 100.0 * 0.5) if historical_waste > 10 else 1.0
+    portions = round(expected_diners * menu_factor * waste_trim)
+
+    # Core portion output card
+    st.metric(label="🔥 EXACT PORTIONS TO PREPARE TODAY", value=f"{portions} Plates")
+
+    # Smart warnings & alerts
+    if school_id == "shg":
+        if menu_choice == "Githeri": st.error("⚠️ AI Alert: Portions slashed by 40% due to bun-hoarding patterns.")
+        elif menu_choice in ["Ugali & Bitterherbs", "Ugali & Cabbage"]: st.warning("⚠️ AI Alert: Portions reduced by 35% due to high canteen flight risk.")
+        elif "Pilau" in menu_choice: st.success("🎉 AI Alert: Extra portions added! High turnout expected for Saturday Pilau.")
+    elif school_id == "ahs" and "Beef" in menu_choice:
+        st.success("🎉 AI Alert: Highly popular meat menu item active. Multipliers boosted.")
+    elif school_id == "stg" and "Chapati" in menu_choice:
+        st.success("🔥 AI Alert: Chapati day! Expect heavy line crowds.")
+    elif school_id == "len" and "Njahi" in menu_choice:
+        st.error("⚠️ AI Alert: Njahi day traditionally has lower consumption enthusiasm. Food waste safety filters maximized.")
+
+    st.markdown("---")
+    
+    # Launch sub-modules
+    render_ingredient_planner(portions, menu_choice, school_id)
+    render_waste_shortage_tracker(portions, school_id)
+
+st.markdown("---")
+st.caption("AI engine for state house girls kitchen management network created by Grace Pendo a grade 10 student in 2026")
