@@ -117,4 +117,25 @@ if school_choice != "Select a school...":
         school_id, def_enroll, def_menus = "nch", 1300, ["Rice & Beans Classic", "Ugali & Cabbage Mixed", "Patch Special Githeri", "Rice & Chicken/Meat Stew"]
 
     # Handle dynamic typewriter menus
-    if menu_
+    if menu_mode == "Type Custom Menu Manually":
+        menu_choice = st.sidebar.text_input("Type precisely what is cooking today:", value="E.g., Special Chapati & Beans Stew", key=f"custom_menu_{school_id}")
+    else:
+        if school_id == "shg":
+            menu_df = load_sheet_data("Menus")
+            if menu_df is not None and not menu_df.empty:
+                def_menus = menu_df.iloc[:, 0].dropna().tolist()
+        menu_choice = st.sidebar.selectbox("Choose Today's Preset Menu:", def_menus, key=f"preset_menu_{school_id}")
+
+    # Core Live Filters
+    st.sidebar.markdown("---")
+    st.sidebar.header("📊 Live Turnout Controls")
+    student_count = st.sidebar.number_input("Total School Enrollment:", value=def_enroll, step=50, key=f"enroll_{school_id}")
+    attendance = st.sidebar.slider("Expected Attendance Buffer (%)", 50, 120, 100, key=f"attend_{school_id}")
+    historical_waste = st.sidebar.slider("Recent Base Plate Waste (%)", 0, 50, 10, key=f"hwaste_{school_id}")
+
+    # Layout Execution
+    st.success(f"✅ {school_choice} Profile Loaded!")
+    st.write(f"## 🍳 {school_choice} Kitchen Dashboard")
+    
+    expected_diners = student_count * (attendance / 100.0)
+    menu_
