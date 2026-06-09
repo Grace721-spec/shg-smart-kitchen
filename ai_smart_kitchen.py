@@ -75,7 +75,7 @@ else:
         menu_choice = st.selectbox("Select Active Menu Item:", available_meals)
         selected_row = editable_df[editable_df["Meal Name"] == menu_choice].iloc[0]
 
-        # Use 1200 as a default enrollment or pull from slider
+        # Use 1200 as a default enrollment or pull from sidebar
         student_count = st.sidebar.number_input("Total Enrollment:", min_value=10, value=1200)
         attendance = st.sidebar.slider("Attendance %", 50, 100, 100)
         
