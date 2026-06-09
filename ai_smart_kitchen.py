@@ -57,6 +57,19 @@ menu_choice = st.sidebar.selectbox(
 
 attendance = st.sidebar.slider("Expected Attendance (%)", 50, 120, 100)
 
+# --- NEW DEVELOPMENT CREDIT WATERMARK ---
+st.sidebar.markdown("---")
+st.sidebar.markdown("### 👩‍💻 Developer Portfolio")
+st.sidebar.info(
+    """
+    **Project:** Smart Kitchen Optimization Tool  
+    **Designed & Engineered by:** Grace Pendo  
+    **Target Institution:** State House Girls' High School  
+    
+    *Developed as a community sustainability project focusing on data logic, resource conservation, and innovative resource management.*
+    """
+)
+
 # Run target metrics calculation
 portions = calculate_chef_portions(student_count, attendance, menu_choice)
 
