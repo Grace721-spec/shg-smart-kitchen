@@ -4,17 +4,6 @@ import pandas as pd
 # Configure the app
 st.set_page_config(page_title="Smart Kitchen Network AI", layout="wide")
 
-# Google Sheet ID
-SHEET_ID = "1gG2Y8lD2W2MhN0_m3aTzNl-vB2S_eC6F_wNpxfMco_w"
-
-@st.cache_data(ttl=60)
-def load_sheet_data(sheet_name):
-    url = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
-    try:
-        return pd.read_csv(url)
-    except Exception:
-        return None
-
 # Global Shared Component: Dynamic Ingredient Planner
 def render_ingredient_planner(portions, menu_choice, suffix=""):
     st.write("### ⚖️ Raw Ingredient Weight Planner")
@@ -120,10 +109,6 @@ if school_choice != "Select a school...":
     if menu_mode == "Type Custom Menu Manually":
         menu_choice = st.sidebar.text_input("Type precisely what is cooking today:", value="E.g., Special Chapati & Beans Stew", key=f"custom_menu_{school_id}")
     else:
-        if school_id == "shg":
-            menu_df = load_sheet_data("Menus")
-            if menu_df is not None and not menu_df.empty:
-                def_menus = menu_df.iloc[:, 0].dropna().tolist()
         menu_choice = st.sidebar.selectbox("Choose Today's Preset Menu:", def_menus, key=f"preset_menu_{school_id}")
 
     # Core Live Filters
@@ -134,7 +119,7 @@ if school_choice != "Select a school...":
     historical_waste = st.sidebar.slider("Recent Base Plate Waste (%)", 0, 50, 10, key=f"hwaste_{school_id}")
 
     # Layout Execution
-    st.success(f"✅ {school_choice} Profile Loaded!")
+    st.success(f"✅ {school_choice} Profile Loaded Offline!")
     st.write(f"## 🍳 {school_choice} Kitchen Dashboard")
     
     expected_diners = student_count * (attendance / 100.0)
