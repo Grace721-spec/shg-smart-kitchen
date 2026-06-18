@@ -1,0 +1,12 @@
+name: Keep Smart Kitchen Awake
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping App
+        run: |
+          curl -s -o /dev/null https://grace721-spec-shg-smart-kitchen.streamlit.app/
