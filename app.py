@@ -15,7 +15,6 @@ school_passwords = {
 
 st.set_page_config(page_title="Smart Kitchen App", layout="wide")
 
-# Login Logic
 if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
 
@@ -36,39 +35,46 @@ else:
     st.sidebar.button("Logout", on_click=lambda: st.session_state.update({"logged_in": False}))
     st.title(f"Smart Kitchen: {st.session_state.school}")
 
-    # 1. User-Editable Menu (Restored)
-    st.subheader("📋 Edit Today's Menu")
-    carb_item = st.text_input("Carbohydrate", "Rice")
-    carb_grams = st.number_input("Grams per student", value=150)
+    # 1. Number of Students (Top)
+    st.subheader("👥 Attendance")
+    num_students = st.number_input("Number of Students Present", min_value=0, value=1000, step=50)
     
-    protein_item = st.text_input("Protein", "Dry beans")
-    protein_grams = st.number_input("Grams per student", value=90)
+    st.markdown("---")
 
-    veg_item = st.text_input("Vegetable", "Cabbage")
-    veg_grams = st.number_input("Grams per student", value=80)
+    # 2. Editable Ingredients Dashboard (Horizontal)
+    st.subheader("📋 Edit Daily Menu & Grams")
+    cols = st.columns(4)
+    
+    with cols[0]:
+        carb_name = st.text_input("Carb", "Rice")
+        carb_g = st.number_input("Grams/Stud", value=150)
+    with cols[1]:
+        prot_name = st.text_input("Protein", "Dry beans")
+        prot_g = st.number_input("Grams/Stud ", value=90)
+    with cols[2]:
+        veg_name = st.text_input("Veg", "Cabbage")
+        veg_g = st.number_input("Grams/Stud  ", value=80)
+    with cols[3]:
+        fruit_name = st.text_input("Fruit", "Banana")
+        fruit_g = st.number_input("Grams/Stud   ", value=120)
 
-    fruit_item = st.text_input("Fruit", "Banana")
-    fruit_grams = st.number_input("Grams per student", value=120)
-
-    # 2. Calculation
-    st.subheader("🧮 Ingredient Requirements")
-    num_students = st.number_input("Number of Students", min_value=0, value=1000, step=50)
-
-    if st.button("Calculate"):
-        st.write(f"**Calculated Requirements for {num_students} students:**")
-        st.info(f"{carb_item}: {(num_students * carb_grams/1000):.1f} Kgs")
-        st.info(f"{protein_item}: {(num_students * protein_grams/1000):.1f} Kgs")
-        st.info(f"{veg_item}: {(num_students * veg_grams/1000):.1f} Kgs")
-        st.info(f"{fruit_item}: {(num_students * fruit_grams/1000):.1f} Kgs")
+    # 3. Calculation Display
+    st.subheader("🧮 Daily Requirements (Kgs)")
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric(f"{carb_name}", f"{(num_students * carb_g / 1000):.1f} Kgs")
+    c2.metric(f"{prot_name}", f"{(num_students * prot_g / 1000):.1f} Kgs")
+    c3.metric(f"{veg_name}", f"{(num_students * veg_g / 1000):.1f} Kgs")
+    c4.metric(f"{fruit_name}", f"{(num_students * fruit_g / 1000):.1f} Kgs")
 
     st.markdown("---")
 
-    # 3. Waste Tracker
+    # 4. Waste Tracker
     st.subheader("📉 Waste & Savings Tracker")
-    wasted = st.number_input("Food Wasted (Kgs)", min_value=0.0)
-    saved = st.number_input("Food Saved (Kgs)", min_value=0.0)
+    w_cols = st.columns(2)
+    wasted = w_cols[0].number_input("Food Wasted (Kgs)", min_value=0.0, step=0.5)
+    saved = w_cols[1].number_input("Food Saved (Kgs)", min_value=0.0, step=0.5)
     
-    if st.button("Submit Waste Report"):
+    if st.button("Submit Report"):
         if wasted > saved:
             st.error(f"Net Loss: {wasted - saved:.1f} Kgs")
         else:
