@@ -1,6 +1,6 @@
 import streamlit as st
 
-# School Login Data
+# School Login Data (Stored in script for quick access)
 school_passwords = {
     "Alliance Girls High School": "AGHS2026", "Alliance High School": "AHS2026",
     "Highridge Girls Secondary School": "HGSS2026", "Jamhuri High School": "JHS2026",
@@ -15,12 +15,12 @@ school_passwords = {
 
 st.set_page_config(page_title="Smart Kitchen App", layout="wide")
 
-# Login Logic
+# Persistent Session State (Keeps data locally in the browser session)
 if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
 
 if not st.session_state.logged_in:
-    st.title("🔐 Smart Kitchen Login")
+    st.title("🔐 Smart Kitchen (Offline Mode)")
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         selected_school = st.selectbox("Select Your School", list(school_passwords.keys()))
@@ -33,19 +33,17 @@ if not st.session_state.logged_in:
             else:
                 st.error("Incorrect password!")
 else:
+    # Everything below processes locally once loaded
     st.sidebar.button("Logout", on_click=lambda: st.session_state.update({"logged_in": False}))
     st.title(f"Smart Kitchen: {st.session_state.school}")
 
-    # 1. Attendance (Top-most)
     st.subheader("👥 Attendance")
     num_students = st.number_input("Number of Students Present", min_value=0, value=1000, step=50)
     
     st.markdown("---")
 
-    # 2. Horizontal Ingredients Dashboard
-    st.subheader("📋 Edit Daily Menu & Grams")
+    # Local Calculations
     cols = st.columns(4)
-    
     with cols[0]:
         carb_name = st.text_input("Carb", "Rice", key="c1_n")
         carb_g = st.number_input("Grams/Stud", value=150, key="c1_g")
@@ -59,8 +57,7 @@ else:
         fruit_name = st.text_input("Fruit", "Banana", key="c4_n")
         fruit_g = st.number_input("Grams/Stud   ", value=120, key="c4_g")
 
-    # 3. Calculation Display
-    st.subheader("🧮 Daily Requirements (Kgs)")
+    st.subheader("🧮 Requirements")
     c1, c2, c3, c4 = st.columns(4)
     c1.metric(f"{carb_name}", f"{(num_students * carb_g / 1000):.1f} Kgs")
     c2.metric(f"{prot_name}", f"{(num_students * prot_g / 1000):.1f} Kgs")
@@ -69,17 +66,14 @@ else:
 
     st.markdown("---")
 
-    # 4. Waste & Savings Tracker
-    st.subheader("📉 Waste & Savings Tracker")
+    # Local Waste Logic
+    st.subheader("📉 Waste Tracker")
     w_cols = st.columns(2)
     wasted = w_cols[0].number_input("Food Wasted (Kgs)", min_value=0.0, step=0.5, key="w1")
     saved = w_cols[1].number_input("Food Saved (Kgs)", min_value=0.0, step=0.5, key="w2")
     
     if st.button("Submit Report"):
         if wasted > 0:
-            st.error(f"⚠️ Waste Detected: {wasted:.1f} Kgs.")
-            st.write(f"**Action Plan:** To hit our zero-waste goal, let's try reducing our next batch preparation by **{(wasted * 0.8):.1f} Kgs**. Small adjustments make a huge difference!")
-        
+            st.error(f"⚠️ Waste: {wasted:.1f} Kgs. Reduce next batch by {(wasted * 0.8):.1f} Kgs.")
         if saved > 0:
-            st.success(f"🎉 Great Job! You saved {saved:.1f} Kgs of food today.")
-            st.write("Keep up this sustainable momentum—every gram saved helps feed more students and reduces kitchen costs!")
+            st.success(f"🎉 Saved {saved:.1f} Kgs! Great job.")
