@@ -1,6 +1,6 @@
 import streamlit as st
 
-# School Login Data (Stored in script for quick access)
+# School Login Data
 school_passwords = {
     "Alliance Girls High School": "AGHS2026", "Alliance High School": "AHS2026",
     "Highridge Girls Secondary School": "HGSS2026", "Jamhuri High School": "JHS2026",
@@ -15,12 +15,12 @@ school_passwords = {
 
 st.set_page_config(page_title="Smart Kitchen App", layout="wide")
 
-# Persistent Session State (Keeps data locally in the browser session)
+# Login Logic
 if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
 
 if not st.session_state.logged_in:
-    st.title("🔐 Smart Kitchen (Offline Mode)")
+    st.title("🔐 Smart Kitchen Login")
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         selected_school = st.selectbox("Select Your School", list(school_passwords.keys()))
@@ -33,30 +33,33 @@ if not st.session_state.logged_in:
             else:
                 st.error("Incorrect password!")
 else:
-    # Everything below processes locally once loaded
     st.sidebar.button("Logout", on_click=lambda: st.session_state.update({"logged_in": False}))
     st.title(f"Smart Kitchen: {st.session_state.school}")
 
+    # 1. Attendance
     st.subheader("👥 Attendance")
     num_students = st.number_input("Number of Students Present", min_value=0, value=1000, step=50)
     
     st.markdown("---")
 
-    # Local Calculations
+    # 2. Horizontal Ingredients Dashboard
+    st.subheader("📋 Edit Daily Menu & Grams")
     cols = st.columns(4)
+    
     with cols[0]:
-        carb_name = st.text_input("Carb", "Rice", key="c1_n")
-        carb_g = st.number_input("Grams/Stud", value=150, key="c1_g")
+        carb_name = st.text_input("Carb", "Rice", key="carb_n")
+        carb_g = st.number_input("Grams/Stud", value=150, key="carb_g")
     with cols[1]:
-        prot_name = st.text_input("Protein", "Dry beans", key="c2_n")
-        prot_g = st.number_input("Grams/Stud ", value=90, key="c2_g")
+        prot_name = st.text_input("Protein", "Dry beans", key="prot_n")
+        prot_g = st.number_input("Grams/Stud ", value=90, key="prot_g")
     with cols[2]:
-        veg_name = st.text_input("Veg", "Cabbage", key="c3_n")
-        veg_g = st.number_input("Grams/Stud  ", value=80, key="c3_g")
+        veg_name = st.text_input("Veg", "Cabbage", key="veg_n")
+        veg_g = st.number_input("Grams/Stud  ", value=80, key="veg_g")
     with cols[3]:
-        fruit_name = st.text_input("Fruit", "Banana", key="c4_n")
-        fruit_g = st.number_input("Grams/Stud   ", value=120, key="c4_g")
+        fruit_name = st.text_input("Fruit", "Banana", key="fruit_n")
+        fruit_g = st.number_input("Grams/Stud   ", value=120, key="fruit_g")
 
+    # 3. Calculation Display
     st.subheader("🧮 Requirements")
     c1, c2, c3, c4 = st.columns(4)
     c1.metric(f"{carb_name}", f"{(num_students * carb_g / 1000):.1f} Kgs")
@@ -66,14 +69,17 @@ else:
 
     st.markdown("---")
 
-    # Local Waste Logic
+    # 4. Waste Tracker with Actionable Feedback
     st.subheader("📉 Waste Tracker")
     w_cols = st.columns(2)
-    wasted = w_cols[0].number_input("Food Wasted (Kgs)", min_value=0.0, step=0.5, key="w1")
-    saved = w_cols[1].number_input("Food Saved (Kgs)", min_value=0.0, step=0.5, key="w2")
+    wasted = w_cols[0].number_input("Food Wasted (Kgs)", min_value=0.0, step=0.5, key="w_in")
+    saved = w_cols[1].number_input("Food Saved (Kgs)", min_value=0.0, step=0.5, key="s_in")
     
     if st.button("Submit Report"):
         if wasted > 0:
-            st.error(f"⚠️ Waste: {wasted:.1f} Kgs. Reduce next batch by {(wasted * 0.8):.1f} Kgs.")
+            st.error(f"⚠️ Waste Detected: {wasted:.1f} Kgs.")
+            st.write(f"**Action Plan:** Let's try reducing our next batch preparation by **{(wasted * 0.8):.1f} Kgs**.")
+        
         if saved > 0:
-            st.success(f"🎉 Saved {saved:.1f} Kgs! Great job.")
+            st.success(f"🎉 Great Job! You saved {saved:.1f} Kgs of food today.")
+            st.write("Keep up this momentum—every gram saved helps reduce kitchen costs!")
