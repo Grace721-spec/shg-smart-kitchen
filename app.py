@@ -15,6 +15,7 @@ school_passwords = {
 
 st.set_page_config(page_title="Smart Kitchen App", layout="wide")
 
+# Login Logic
 if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
 
@@ -68,14 +69,17 @@ else:
 
     st.markdown("---")
 
-    # 4. Waste Tracker
+    # 4. Waste & Savings Tracker with Motivational Logic
     st.subheader("📉 Waste & Savings Tracker")
     w_cols = st.columns(2)
     wasted = w_cols[0].number_input("Food Wasted (Kgs)", min_value=0.0, step=0.5)
     saved = w_cols[1].number_input("Food Saved (Kgs)", min_value=0.0, step=0.5)
     
     if st.button("Submit Report"):
-        if wasted > saved:
-            st.error(f"Net Loss: {wasted - saved:.1f} Kgs")
-        else:
-            st.success(f"Net Efficiency: Saved {saved - wasted:.1f} Kgs!")
+        if wasted > 0:
+            st.error(f"⚠️ Waste Detected: {wasted:.1f} Kgs.")
+            st.write(f"**Action Plan:** To hit our zero-waste goal, let's try reducing our next batch preparation by **{(wasted * 0.8):.1f} Kgs**. Small adjustments make a huge difference!")
+        
+        if saved > 0:
+            st.success(f"🎉 Great Job! You saved {saved:.1f} Kgs of food today.")
+            st.write("Keep up this sustainable momentum—every gram saved helps feed more students and reduces kitchen costs!")
