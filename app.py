@@ -1,20 +1,12 @@
 import streamlit as st
 
-# School Login Data
-school_passwords = {
-    "Alliance Girls High School": "AGHS2026", "Alliance High School": "AHS2026",
-    "Moi Girls Nairobi": "MGN2026", "Highridge Girls Secondary School": "HGSS2026", 
-    "Jamhuri High School": "JHS2026", "Kenya High School": "KHS2026", 
-    "Lenana School": "LS2026", "Limuru Girls' School": "LGS2026", 
-    "Mang'u High School": "MHS2026", "Nairobi School": "NS2026", 
-    "Pangani Girls High School": "PGHS2026", "St. George’s Girls’ Secondary School": "SGGS2026", 
-    "Starehe Boys' Centre": "SBC2026", "Starehe Girls' Centre": "SGC2026", 
-    "State House Boys High School": "SHB2026", "State House Girls High School": "SHG2026", 
-    "The Aga Khan High School - Nairobi": "AKHS2026", "Upper Hill School": "UHS2026"
-}
+# --- SECURE CONFIGURATION ---
+# This line automatically pulls the passwords from your Streamlit Secrets vault
+school_passwords = st.secrets["passwords"]
 
 st.set_page_config(page_title="Smart Kitchen App", layout="wide")
 
+# --- LOGIN LOGIC ---
 if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
 
@@ -22,6 +14,7 @@ if not st.session_state.logged_in:
     st.title("🔐 Smart Kitchen Login")
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
+        # Accessing dictionary keys from the secret vault
         selected_school = st.selectbox("Select Your School", list(school_passwords.keys()))
         password = st.text_input("Enter Password", type="password")
         if st.button("Login"):
@@ -35,6 +28,7 @@ if not st.session_state.logged_in:
     st.markdown("<div style='text-align: center;'>App created by <b>Grace Pendo</b> from <b>State House Girls High School</b></div>", unsafe_allow_html=True)
 
 else:
+    # --- DASHBOARD ---
     st.sidebar.button("Logout", on_click=lambda: st.session_state.update({"logged_in": False}))
     st.title(f"Smart Kitchen: {st.session_state.school}")
 
