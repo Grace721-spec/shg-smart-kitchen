@@ -36,28 +36,28 @@ else:
     st.sidebar.button("Logout", on_click=lambda: st.session_state.update({"logged_in": False}))
     st.title(f"Smart Kitchen: {st.session_state.school}")
 
-    # 1. Number of Students (Top)
+    # 1. Attendance (Top-most)
     st.subheader("👥 Attendance")
     num_students = st.number_input("Number of Students Present", min_value=0, value=1000, step=50)
     
     st.markdown("---")
 
-    # 2. Editable Ingredients Dashboard (Horizontal)
+    # 2. Horizontal Ingredients Dashboard
     st.subheader("📋 Edit Daily Menu & Grams")
     cols = st.columns(4)
     
     with cols[0]:
-        carb_name = st.text_input("Carb", "Rice")
-        carb_g = st.number_input("Grams/Stud", value=150)
+        carb_name = st.text_input("Carb", "Rice", key="c1_n")
+        carb_g = st.number_input("Grams/Stud", value=150, key="c1_g")
     with cols[1]:
-        prot_name = st.text_input("Protein", "Dry beans")
-        prot_g = st.number_input("Grams/Stud ", value=90)
+        prot_name = st.text_input("Protein", "Dry beans", key="c2_n")
+        prot_g = st.number_input("Grams/Stud ", value=90, key="c2_g")
     with cols[2]:
-        veg_name = st.text_input("Veg", "Cabbage")
-        veg_g = st.number_input("Grams/Stud  ", value=80)
+        veg_name = st.text_input("Veg", "Cabbage", key="c3_n")
+        veg_g = st.number_input("Grams/Stud  ", value=80, key="c3_g")
     with cols[3]:
-        fruit_name = st.text_input("Fruit", "Banana")
-        fruit_g = st.number_input("Grams/Stud   ", value=120)
+        fruit_name = st.text_input("Fruit", "Banana", key="c4_n")
+        fruit_g = st.number_input("Grams/Stud   ", value=120, key="c4_g")
 
     # 3. Calculation Display
     st.subheader("🧮 Daily Requirements (Kgs)")
@@ -69,11 +69,11 @@ else:
 
     st.markdown("---")
 
-    # 4. Waste & Savings Tracker with Motivational Logic
+    # 4. Waste & Savings Tracker
     st.subheader("📉 Waste & Savings Tracker")
     w_cols = st.columns(2)
-    wasted = w_cols[0].number_input("Food Wasted (Kgs)", min_value=0.0, step=0.5)
-    saved = w_cols[1].number_input("Food Saved (Kgs)", min_value=0.0, step=0.5)
+    wasted = w_cols[0].number_input("Food Wasted (Kgs)", min_value=0.0, step=0.5, key="w1")
+    saved = w_cols[1].number_input("Food Saved (Kgs)", min_value=0.0, step=0.5, key="w2")
     
     if st.button("Submit Report"):
         if wasted > 0:
