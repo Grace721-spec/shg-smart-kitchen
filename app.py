@@ -1,6 +1,6 @@
 import streamlit as st
 
-# 1. School Data Dictionary
+# School Data
 school_passwords = {
     "Alliance Girls High School": "AGHS2026",
     "Alliance High School": "AHS2026",
@@ -23,7 +23,7 @@ school_passwords = {
 
 st.set_page_config(page_title="Smart Kitchen App", layout="wide")
 
-# 2. Login Logic
+# Login Logic
 if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
 
@@ -41,42 +41,47 @@ if not st.session_state.logged_in:
             else:
                 st.error("Incorrect password!")
 else:
-    # 3. Main Dashboard
     st.sidebar.button("Logout", on_click=lambda: st.session_state.update({"logged_in": False}))
     st.title(f"Smart Kitchen: {st.session_state.school}")
 
-    # Menu Input
-    st.subheader("📋 Daily Menu & Ingredients")
-    menu_name = st.text_input("Today's Menu")
-    ingredients = st.text_area("List Ingredients (e.g., Flour, Beef, Tomatoes)")
-    if st.button("Save Menu"):
-        st.success(f"Menu for '{menu_name}' saved.")
-
-    st.markdown("---")
-
-    # Calculator with High-Energy Toggle
-    st.subheader("🧮 Smart Requirement Calculator")
-    num_students = st.number_input("Number of Students Present", min_value=1, value=1000)
-    energy_level = st.radio("Serving Intensity", ["Standard", "High-Energy (Sports)"])
+    # 4-Column Ingredient Calculator
+    st.subheader("🧮 Ingredient Requirements")
+    num_students = st.number_input("Number of Students Present", min_value=0, value=1000, step=50)
     
-    # Logic: 0.15kg (150g) vs 0.20kg (200g)
-    multiplier = 0.15 if energy_level == "Standard" else 0.20
-
-    if st.button("Calculate Daily Needs"):
-        col1, col2, col3 = st.columns(3)
-        col1.metric("Maize Flour (Kgs)", f"{num_students * 0.25:.1f}")
-        col2.metric("Proteins (Kgs)", f"{num_students * multiplier:.1f}")
-        col3.metric("Vegetables (Kgs)", f"{num_students * 0.10:.1f}")
+    # We use 4 columns for the 4 key ingredients
+    c1, c2, c3, c4 = st.columns(4)
+    
+    with c1:
+        st.write("**Carbohydrates**")
+        carb_name = st.text_input("Item 1", "Ugali Flour")
+        st.metric(f"{carb_name} (Kgs)", f"{num_students * 0.25:.1f}")
+        
+    with c2:
+        st.write("**Proteins**")
+        prot_name = st.text_input("Item 2", "Beans")
+        st.metric(f"{prot_name} (Kgs)", f"{num_students * 0.15:.1f}")
+        
+    with c3:
+        st.write("**Vegetables**")
+        veg_name = st.text_input("Item 3", "Cabbage")
+        st.metric(f"{veg_name} (Kgs)", f"{num_students * 0.10:.1f}")
+        
+    with c4:
+        st.write("**Other (Oil/Salt)**")
+        other_name = st.text_input("Item 4", "Cooking Oil")
+        st.metric(f"{other_name} (Liters/Kgs)", f"{num_students * 0.02:.1f}")
 
     st.markdown("---")
 
-    # Waste Tracker
-    st.subheader("📉 Waste Tracker")
-    waste_kgs = st.number_input("Enter Kgs of food wasted", min_value=0.0, step=0.5)
+    # Waste & Savings
+    st.subheader("📉 Waste & Savings Tracker")
+    w_col1, w_col2 = st.columns(2)
+    with w_col1:
+        wasted = st.number_input("Food Wasted (Kgs)", min_value=0.0, step=0.5)
+    with w_col2:
+        saved = st.number_input("Food Saved (Kgs)", min_value=0.0, step=0.5)
 
-    if waste_kgs > 10:
-        st.error("⚠️ High waste detected! Please review portion sizes.")
-    elif waste_kgs > 0:
-        st.warning(f"⚠️ {waste_kgs} Kgs wasted. Let's aim for zero!")
+    if wasted > saved:
+        st.error(f"⚠️ Net Loss: {wasted - saved:.1f} Kgs. Let's look for ways to reduce prep waste!")
     else:
-        st.success("🎉 Amazing work! No food wasted today. You are a sustainable champion!")
+        st.success(f"🎉 Net Efficiency: You successfully managed or saved {saved - wasted:.1f} Kgs today!")
