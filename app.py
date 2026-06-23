@@ -31,25 +31,25 @@ if not st.session_state.logged_in:
                 st.rerun()
             else:
                 st.error("Incorrect password!")
+    st.markdown("---")
+    st.markdown("<div style='text-align: center;'>App created by <b>Grace Pendo</b> from <b>State House Girls High School</b></div>", unsafe_allow_html=True)
+
 else:
     st.sidebar.button("Logout", on_click=lambda: st.session_state.update({"logged_in": False}))
     st.title(f"Smart Kitchen: {st.session_state.school}")
 
-    # 1. Attendance
     st.subheader("👥 Attendance")
     num_students = st.number_input("Number of Students Present", min_value=0, value=1000, step=50)
-    
     st.markdown("---")
 
-    # 2. Horizontal Ingredients Dashboard
     st.subheader("📋 Select Daily Menu & Grams")
     cols = st.columns(4)
     
-    # Updated Lists
+    # Ingredient Lists
     carbs = ["Maize Flour (Ugali)", "Rice", "Wheat Flour (Chapati)"]
-    proteins = ["Beans", "Green Grams", "Beef", "Chicken", "Peas"] # Beef added
+    proteins = ["Beans", "Green Grams", "Beef", "Chicken", "Peas"]
     veggies = ["Cabbage", "Kales", "Spinach"]
-    fruits = ["Mango", "Banana", "Apple", "Orange"] # Mango added
+    fruits = ["Mango", "Banana", "Apple", "Orange"]
 
     with cols[0]:
         carb_name = st.selectbox("Carb", carbs, key="c1")
@@ -64,7 +64,6 @@ else:
         fruit_name = st.selectbox("Fruit", fruits, key="c4")
         fruit_g = st.number_input("Grams/Stud   ", value=120, key="c4g")
 
-    # 3. Calculation Display
     st.subheader("🧮 Requirements")
     c1, c2, c3, c4 = st.columns(4)
     c1.metric(f"{carb_name}", f"{(num_students * carb_g / 1000):.1f} Kgs")
@@ -74,7 +73,6 @@ else:
 
     st.markdown("---")
 
-    # 4. Waste Tracker
     st.subheader("📉 Waste Tracker")
     w_cols = st.columns(2)
     wasted = w_cols[0].number_input("Food Wasted (Kgs)", min_value=0.0, step=0.5, key="w_in")
@@ -83,6 +81,6 @@ else:
     if st.button("Submit Report"):
         if wasted > 0:
             st.error(f"⚠️ Waste Detected: {wasted:.1f} Kgs.")
-            st.write(f"**Action Plan:** Let's try reducing our next batch preparation by **{(wasted * 0.8):.1f} Kgs**.")
+            st.write(f"**Action Plan:** Reduce next batch by **{(wasted * 0.8):.1f} Kgs** to optimize.")
         if saved > 0:
             st.success(f"🎉 Great Job! You saved {saved:.1f} Kgs of food today.")
