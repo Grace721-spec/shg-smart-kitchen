@@ -37,12 +37,13 @@ else:
     st.sidebar.button("Logout", on_click=lambda: st.session_state.update({"logged_in": False}))
     st.title(f"Smart Kitchen: {st.session_state.school}")
 
-    # Ingredient Calculator (Using database ratios from Smart Kitchen Database.csv )
+    # Ingredient Calculator (Using database ratios) 
     st.subheader("🧮 Ingredient Requirements (Grams per student)")
     num_students = st.number_input("Number of Students Present", min_value=0, value=1000, step=50)
     
     c1, c2, c3, c4 = st.columns(4)
     
+    # Calculations based on provided database 
     with c1:
         st.metric("Rice (Kgs)", f"{(num_students * 0.150):.1f}") # 150g 
     with c2:
