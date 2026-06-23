@@ -36,7 +36,7 @@ else:
     st.sidebar.button("Logout", on_click=lambda: st.session_state.update({"logged_in": False}))
     st.title(f"Smart Kitchen: {st.session_state.school}")
 
-    # 1. User-Editable Menu (The "Old" way you liked)
+    # 1. User-Editable Menu (Restored)
     st.subheader("📋 Edit Today's Menu")
     carb_item = st.text_input("Carbohydrate", "Rice")
     carb_grams = st.number_input("Grams per student", value=150)
