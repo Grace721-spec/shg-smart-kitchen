@@ -10,15 +10,37 @@ if "logged_in" not in st.session_state:
 # --- Login System ---
 if not st.session_state.logged_in:
     st.title("🔐 Smart Kitchen Login")
-    school = st.selectbox("Select Your School", ["Alliance Girls High School", "State House Girls High School", "Other"])
+    
+    school_passwords = {
+        "Alliance Girls High School": "AGHS2026",
+        "Alliance High School": "AHS2026",
+        "Moi Girls Nairobi": "MGN2026",
+        "Highridge Girls Secondary School": "HGSS2026",
+        "Jamhuri High School": "JHS2026",
+        "Kenya High School": "KHS2026",
+        "Lenana School": "LS2026",
+        "Limuru Girls' School": "LGS2026",
+        "Mang'u High School": "MHS2026",
+        "Nairobi School": "NS2026",
+        "Pangani Girls High School": "PGHS2026",
+        "St. George’s Girls’ Secondary School": "SGGS2026",
+        "Starehe Boys' Centre": "SBC2026",
+        "Starehe Girls' Centre": "SGC2026",
+        "State House Boys High School": "SHB2026",
+        "State House Girls High School": "SHG2026",
+        "The Aga Khan High School - Nairobi": "AKHS2026",
+        "Upper Hill School": "UHS2026"
+    }
+    
+    school = st.selectbox("Select Your School", list(school_passwords.keys()))
     password = st.text_input("Enter Password", type="password")
     
     if st.button("Login"):
-        if password == "admin123": 
+        if password == school_passwords.get(school):
             st.session_state.logged_in = True
             st.rerun()
         else:
-            st.error("Incorrect password.")
+            st.error("Incorrect password for this school.")
 else:
     # --- Main Application ---
     st.title("🥗 Smart Kitchen Manager")
@@ -57,9 +79,9 @@ else:
 
     st.divider()
 
-    # --- Waste & Shortage Tracker Module ---
-    st.header("📊 Waste & Shortage Tracker")
-    st.write("Every gram tracked is a step toward a more sustainable and equitable school community. Your dedication ensures that no resource goes to waste and every student is nourished!")
+    # --- Waste, Saved & Shortage Tracker Module ---
+    st.header("📊 Waste, Saved & Shortage Tracker")
+    st.write("Tracking every gram helps us feed everyone while protecting our planet!")
 
     w1, w2, w3 = st.columns(3)
     with w1:
@@ -70,12 +92,12 @@ else:
         shortage_reported = st.checkbox("Did food run out? (Shortage)")
 
     if st.button("Submit Daily Report"):
-        st.success("Report submitted successfully! Thank you for your diligence in managing our school's resources.")
+        st.success("Report submitted successfully! Thank you for your diligence.")
         
         # Motivational Feedback Logic
         if shortage_reported:
-            st.warning("⚠️ Shortage detected: Thank you for identifying this. By logging this data, you are helping ensure that in the future, every student receives the meal they deserve. You are taking great care of your peers!")
+            st.warning("⚠️ Shortage detected: Thank you for identifying this. Your data helps us ensure every student is nourished. You are doing a wonderful job!")
         elif food_wasted > 5.0:
-            st.info("📉 High waste detected: Every bit of data helps us refine our planning. Let’s keep adjusting so we can continue to be excellent stewards of our resources. You've got this!")
+            st.info("📉 High waste detected: Every bit of data helps us refine our planning. Keep adjusting—you are making a real difference!")
         else:
-            st.write("✅ Consumption is beautifully balanced! Your hard work is creating a more efficient and sustainable kitchen for everyone. Truly excellent work!")
+            st.write("✅ Consumption is beautifully balanced! Your hard work is creating a more efficient and sustainable kitchen for everyone.")
