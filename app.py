@@ -14,25 +14,24 @@ if not st.session_state.logged_in:
     password = st.text_input("Enter Password", type="password")
     
     if st.button("Login"):
-        # Replace 'admin123' with your actual secure password
         if password == "admin123": 
             st.session_state.logged_in = True
             st.rerun()
         else:
             st.error("Incorrect password.")
 else:
-    # --- Main Application (After Login) ---
+    # --- Main Application ---
     st.title("🥗 Smart Kitchen Manager")
     
-    # Logout button
     if st.sidebar.button("Logout"):
         st.session_state.logged_in = False
         st.rerun()
 
-    # --- Attendance & Calculator Module ---
+    # --- Attendance Module ---
     st.header("👥 Attendance")
     num_students = st.number_input("Number of Students Present", min_value=0, value=1000, step=1)
 
+    # --- Menu & Calculator ---
     st.header("📋 Select Daily Menu & Grams")
     col1, col2, col3, col4 = st.columns(4)
     
@@ -60,8 +59,9 @@ else:
 
     # --- Waste & Shortage Tracker Module ---
     st.header("📊 Waste & Shortage Tracker")
-    w1, w2, w3 = st.columns(3)
+    st.write("Every gram tracked is a step toward a more sustainable and equitable school community. Your dedication ensures that no resource goes to waste and every student is nourished!")
 
+    w1, w2, w3 = st.columns(3)
     with w1:
         food_wasted = st.number_input("Food Wasted (Kgs)", min_value=0.0, step=0.1)
     with w2:
@@ -70,12 +70,12 @@ else:
         shortage_reported = st.checkbox("Did food run out? (Shortage)")
 
     if st.button("Submit Daily Report"):
-        st.success("Report submitted successfully!")
+        st.success("Report submitted successfully! Thank you for your diligence in managing our school's resources.")
         
-        # Feedback logic
+        # Motivational Feedback Logic
         if shortage_reported:
-            st.warning("⚠️ Shortage detected: Please increase portion estimates for the next batch.")
+            st.warning("⚠️ Shortage detected: Thank you for identifying this. By logging this data, you are helping ensure that in the future, every student receives the meal they deserve. You are taking great care of your peers!")
         elif food_wasted > 5.0:
-            st.info("📉 High waste detected: Consider slightly reducing portions to save resources.")
+            st.info("📉 High waste detected: Every bit of data helps us refine our planning. Let’s keep adjusting so we can continue to be excellent stewards of our resources. You've got this!")
         else:
-            st.write("✅ Consumption is balanced. Keep up the efficiency!")
+            st.write("✅ Consumption is beautifully balanced! Your hard work is creating a more efficient and sustainable kitchen for everyone. Truly excellent work!")
