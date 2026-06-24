@@ -24,7 +24,6 @@ if not st.session_state.logged_in:
     password = st.text_input("Enter Password", type="password")
     
     if st.button("Login"):
-        # Ensure your secrets.toml has these exact keys (AGHS, AHS, etc.)
         if password == st.secrets[school_map[school]]:
             st.session_state.logged_in = True
             st.rerun()
@@ -36,32 +35,33 @@ else:
         st.session_state.logged_in = False
         st.rerun()
 
-    # Attendance
     st.header("👥 Attendance")
     num_students = st.number_input("Number of Students Present", min_value=0, value=1000)
 
-    # Menu
     st.header("📋 Select Daily Menu & Grams")
     col1, col2, col3, col4 = st.columns(4)
-    carb = col1.selectbox("Carb", ["Maize Flour (Ugali)", "Rice", "Potatoes"])
+    
+    carb = col1.selectbox("Carb", ["None", "Maize Flour (Ugali)", "Rice", "Potatoes", "Maize (Dry)"])
     carb_g = col1.number_input("Grams/Stud (Carb)", value=150)
-    protein = col2.selectbox("Protein", ["Beans", "Meat", "Eggs"])
+    
+    protein = col2.selectbox("Protein", ["None", "Beans", "Meat", "Eggs"])
     prot_g = col2.number_input("Grams/Stud (Prot)", value=90)
-    veg = col3.selectbox("Veg", ["Cabbage", "Spinach", "Kales"])
+    
+    veg = col3.selectbox("Veg", ["None", "Cabbage", "Spinach", "Kales"])
     veg_g = col3.number_input("Grams/Stud (Veg)", value=80)
-    fruit = col4.selectbox("Fruit", ["Mango", "Orange", "Banana"])
+    
+    fruit = col4.selectbox("Fruit", ["None", "Mango", "Orange", "Banana"])
     fruit_g = col4.number_input("Grams/Stud (Fruit)", value=120)
 
     st.subheader("📊 Requirements (Calculated)")
     c1, c2, c3, c4 = st.columns(4)
-    c1.metric(carb, f"{(num_students * carb_g) / 1000:.1f} Kgs")
-    c2.metric(protein, f"{(num_students * prot_g) / 1000:.1f} Kgs")
-    c3.metric(veg, f"{(num_students * veg_g) / 1000:.1f} Kgs")
-    c4.metric(fruit, f"{(num_students * fruit_g) / 1000:.1f} Kgs")
+    if carb != "None": c1.metric(carb, f"{(num_students * carb_g) / 1000:.1f} Kgs")
+    if protein != "None": c2.metric(protein, f"{(num_students * prot_g) / 1000:.1f} Kgs")
+    if veg != "None": c3.metric(veg, f"{(num_students * veg_g) / 1000:.1f} Kgs")
+    if fruit != "None": c4.metric(fruit, f"{(num_students * fruit_g) / 1000:.1f} Kgs")
 
     st.divider()
 
-    # Tracker with Shortage Calculator
     st.header("📊 Waste, Saved & Shortage Tracker")
     w1, w2 = st.columns(2)
     food_wasted = w1.number_input("Food Wasted (Kgs)", min_value=0.0, step=0.1)
@@ -69,7 +69,6 @@ else:
     
     shortage_reported = st.checkbox("Did food run out? (Shortage)")
     shortage_deficit = 0.0
-    
     if shortage_reported:
         st.subheader("⚠️ Shortage Details")
         col_s1, col_s2 = st.columns(2)
@@ -80,9 +79,3 @@ else:
 
     if st.button("Submit Daily Report"):
         st.success("Report submitted successfully!")
-        if shortage_reported:
-            st.warning(f"Shortage recorded: {shortage_deficit:.1f} Kgs deficit logged.")
-        elif food_wasted > 5.0:
-            st.info("High waste detected.")
-        else:
-            st.write("Consumption balanced.")
