@@ -24,6 +24,7 @@ if not st.session_state.logged_in:
     password = st.text_input("Enter Password", type="password")
     
     if st.button("Login"):
+        # Ensure your secrets.toml has these exact keys (AGHS, AHS, etc.)
         if password == st.secrets[school_map[school]]:
             st.session_state.logged_in = True
             st.rerun()
@@ -60,19 +61,28 @@ else:
 
     st.divider()
 
-    # Tracker
+    # Tracker with Shortage Calculator
     st.header("📊 Waste, Saved & Shortage Tracker")
     w1, w2 = st.columns(2)
     food_wasted = w1.number_input("Food Wasted (Kgs)", min_value=0.0, step=0.1)
     food_saved = w2.number_input("Food Saved (Kgs)", min_value=0.0, step=0.1)
     
     shortage_reported = st.checkbox("Did food run out? (Shortage)")
-    deficit_kgs = 0.0
+    shortage_deficit = 0.0
+    
     if shortage_reported:
-        deficit_kgs = st.number_input("Estimated Shortage (Kgs)", min_value=0.0, step=0.1)
+        st.subheader("⚠️ Shortage Details")
+        col_s1, col_s2 = st.columns(2)
+        initial_cooked = col_s1.number_input("Original Amount Cooked (Kgs)", min_value=0.0, step=0.1)
+        needed_to_feed = col_s2.number_input("Amount Needed to Feed All (Kgs)", min_value=0.0, step=0.1)
+        shortage_deficit = max(0.0, needed_to_feed - initial_cooked)
+        st.write(f"**Calculated Shortage Deficit: {shortage_deficit:.1f} Kgs**")
 
     if st.button("Submit Daily Report"):
         st.success("Report submitted successfully!")
-        if shortage_reported: st.warning(f"Shortage of {deficit_kgs} Kgs logged.")
-        elif food_wasted > 5.0: st.info("High waste detected.")
-        else: st.write("Consumption balanced.")
+        if shortage_reported:
+            st.warning(f"Shortage recorded: {shortage_deficit:.1f} Kgs deficit logged.")
+        elif food_wasted > 5.0:
+            st.info("High waste detected.")
+        else:
+            st.write("Consumption balanced.")
