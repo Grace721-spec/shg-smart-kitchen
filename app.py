@@ -41,10 +41,10 @@ else:
     st.header("📋 Select Daily Menu & Grams")
     col1, col2, col3, col4 = st.columns(4)
     
-    carb = col1.selectbox("Carb", ["None", "Maize Flour (Ugali)", "Rice", "Potatoes", "Maize (Dry)"])
+    # Updated Carb Options including Wheat Flour
+    carb = col1.selectbox("Carb", ["None", "Maize Flour (Ugali)", "Rice", "Potatoes", "Maize (Dry)", "Wheat Flour (Chapati)"])
     carb_g = col1.number_input("Grams/Stud (Carb)", value=150)
     
-    # Updated Protein Options
     protein = col2.selectbox("Protein", ["None", "Beans", "Meat", "Eggs", "Lentils", "Green Grams", "Peas"])
     prot_g = col2.number_input("Grams/Stud (Prot)", value=90)
     
