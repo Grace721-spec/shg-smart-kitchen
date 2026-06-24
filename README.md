@@ -1,24 +1,37 @@
-# Smart Kitchen App
+# 🥗 Smart Kitchen App
 
-The **Smart Kitchen App** is a digital solution designed to help secondary school kitchens in Kenya optimize food preparation and minimize waste. By automating portion calculations and tracking daily waste, the app ensures resources are used efficiently while maintaining nutritional standards.
+The **Smart Kitchen App** is a digital solution designed to optimize food preparation and minimize waste in institutional kitchens, specifically tailored for secondary schools in Kenya.
 
-## Features
+---
 
-* **Secure Authentication**: School-specific login system to ensure data privacy and authorized access.
-* **Automated Calculations**: Instantly calculates the required kilograms of ingredients (Carbs, Proteins, Vegetables, and Fruits) based on the number of students present.
-* **Waste Management**: Includes a dedicated "Waste Tracker" that suggests precise reductions for future meal preparation based on daily wastage data.
-* **User-Friendly Interface**: Built for simplicity to ensure kitchen staff can operate it with minimal training.
+## 💡 Motivation
+In many secondary schools, estimating bulk food portions often leads to significant food wastage, increasing costs and resource strain. This app provides a data-driven approach to food management, helping kitchen staff prepare precise amounts based on daily student attendance.
 
-## Technology Stack
+## 🚀 Key Features
+* **Secure Authentication**: Multi-school support with encrypted credentials.
+* **Smart Calculations**: Automatically computes the required kilograms of Carbs, Proteins, Vegetables, and Fruits per student.
+* **Waste Tracking & Analytics**: Logs food waste and suggests actionable reductions for future batches, promoting sustainability.
+* **Intuitive Dashboard**: User-friendly interface built for efficiency in high-pressure kitchen environments.
 
-* **Framework**: Streamlit (Python)
+## 🛠️ Technology Stack
+* **Language**: Python
+* **Framework**: Streamlit
 * **Deployment**: Streamlit Cloud
-* **Data Security**: Encrypted secrets management for school credentials.
+* **Security**: Streamlit Secrets (for encrypted credential management)
 
-## About the Creator
+## 📖 Usage Instructions
+1. **Access**: Navigate to the live app link [Insert your App URL here].
+2. **Login**: Select your school from the dropdown menu and enter your designated password.
+3. **Calculate**: Enter the number of students present. The app will generate the necessary ingredient quantities in kilograms.
+4. **Report**: Use the "Waste Tracker" section to submit daily waste data to receive optimization suggestions.
 
-This project was developed by **Grace Pendo** from **State House Girls High School**. It was built to solve real-world logistical challenges in institutional food management.
+## 👤 About the Creator
+**Grace Pendo**
+* [State House Girls High School]
+* A young developer passionate about using technology to solve community challenges.
 
-## License
+## 📄 License
+This project is licensed under the **MIT License**. See the `LICENSE` file for full details.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+---
+*Built with ❤️ to foster efficiency and sustainability in school infrastructure.*
