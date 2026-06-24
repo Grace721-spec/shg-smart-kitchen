@@ -44,7 +44,8 @@ else:
     carb = col1.selectbox("Carb", ["None", "Maize Flour (Ugali)", "Rice", "Potatoes", "Maize (Dry)"])
     carb_g = col1.number_input("Grams/Stud (Carb)", value=150)
     
-    protein = col2.selectbox("Protein", ["None", "Beans", "Meat", "Eggs"])
+    # Updated Protein Options
+    protein = col2.selectbox("Protein", ["None", "Beans", "Meat", "Eggs", "Lentils", "Green Grams", "Peas"])
     prot_g = col2.number_input("Grams/Stud (Prot)", value=90)
     
     veg = col3.selectbox("Veg", ["None", "Cabbage", "Spinach", "Kales"])
