@@ -1,41 +1,24 @@
-# 🎛️ National School Smart Kitchen Network AI
+# Smart Kitchen App
 
-A data-driven, localized logistics and predictive portion-planning application engineered using Python and Streamlit. This system optimizes ingredient procurement, accurately forecasts student turnout baselines, and implements real-time mitigation strategies to eliminate institutional food waste across multiple secondary school profiles.
+The **Smart Kitchen App** is a digital solution designed to help secondary school kitchens in Kenya optimize food preparation and minimize waste. By automating portion calculations and tracking daily waste, the app ensures resources are used efficiently while maintaining nutritional standards.
 
----
+## Features
 
-## 🚀 Key Features
+* **Secure Authentication**: School-specific login system to ensure data privacy and authorized access.
+* **Automated Calculations**: Instantly calculates the required kilograms of ingredients (Carbs, Proteins, Vegetables, and Fruits) based on the number of students present.
+* **Waste Management**: Includes a dedicated "Waste Tracker" that suggests precise reductions for future meal preparation based on daily wastage data.
+* **User-Friendly Interface**: Built for simplicity to ensure kitchen staff can operate it with minimal training.
 
-* **Dynamic Multi-School Profiling:** Implements customized baseline profiles for major national institutions (State House Girls' High School, Alliance High School, St. George's Girls' Secondary School, Lenana School, and Nairobi School).
-* **Behavior-Driven Turnout Forecasting:** Integrates custom algorithmic multi-school preference factors (e.g., automated portion reductions for low-enthusiasm menus prone to canteen flight risks, and automated boosts for high-demand meals like Saturday Pilau).
-* **Zero-Waste Predictive Audit Engine:** Features real-time operational feedback modules including a **Food Wastage Audit** and an **Emergency Shortage Tracker** that output actionable, recursive administrative action items.
-* **Granular Raw Ingredient Planner:** Provides sub-module conversions transforming final dynamically calculated portions into precise store-harvest weights in Kilograms (KGs).
-* **100% Offline-Proof Execution:** Architected with localized data structures to ensure continuous kitchen operations without internet dependency.
+## Technology Stack
 
----
+* **Framework**: Streamlit (Python)
+* **Deployment**: Streamlit Cloud
+* **Data Security**: Encrypted secrets management for school credentials.
 
-## 🛠️ Tech Stack & Architecture
+## About the Creator
 
-* **Language:** Python 3.10+
-* **Framework:** Streamlit (UI & Reactive Layout Execution)
-* **Data Processing:** Pandas (Dataframe restructuring and array optimization)
-* **Design Pattern:** Modular functional components with secure, scoped multi-widget state keys.
+This project was developed by **Grace Pendo** from **State House Girls High School**. It was built to solve real-world logistical challenges in institutional food management.
 
----
+## License
 
-## 📦 Local Installation & Setup
-
-To execute this pipeline locally for administrative demonstrations, clone this repository and initialize the Streamlit server:
-
-```bash
-# Clone the private repository
-git clone [https://github.com/Grace721-spec/shg-smart-kitchen.git](https://github.com/Grace721-spec/shg-smart-kitchen.git)
-
-# Navigate to the project directory
-cd shg-smart-kitchen
-
-# Install the required technical dependencies
-pip install streamlit pandas
-
-# Initialize the web application local server
-streamlit run app.py
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
