@@ -24,9 +24,21 @@ if not st.session_state.logged_in:
     password = st.text_input("Enter Password", type="password")
     
     if st.button("Login"):
-        # You can replace '1234' with your specific secrets logic later
         st.session_state.logged_in = True
         st.rerun()
+
+    # --- Signature Footer ---
+    st.markdown("---")
+    st.markdown(
+        """
+        <div style="text-align: center;">
+            <p style="font-size: 16px;">App made by</p>
+            <p style="font-family: 'Brush Script MT', cursive; font-size: 32px;">Grace Pendo</p>
+            <p style="font-size: 14px;">State House Girls High School | 2026</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 else:
     st.title("🥗 Smart Kitchen Manager")
     if st.sidebar.button("Logout"):
@@ -34,12 +46,13 @@ else:
         st.rerun()
 
     st.header("👥 Attendance")
-    num_students = st.number_input("Number of Students Present", min_value=0, value=1000)
+    # Step set to 100 for students
+    num_students = st.number_input("Number of Students Present", min_value=0, value=1000, step=100)
 
     st.header("📋 Select Daily Menu & Grams")
     col1, col2, col3, col4 = st.columns(4)
     
-    # Using step=50 directly - stable and clean
+    # Gram inputs set to 50
     carb_g = col1.number_input("Grams/Stud (Carb)", value=150, step=50)
     prot_g = col2.number_input("Grams/Stud (Prot)", value=100, step=50)
     veg_g = col3.number_input("Grams/Stud (Veg)", value=100, step=50)
