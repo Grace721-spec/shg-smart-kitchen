@@ -39,20 +39,20 @@ if not st.session_state.logged_in:
         """,
         unsafe_allow_html=True
     )
+
 else:
+    # --- Main App Content ---
     st.title("🥗 Smart Kitchen Manager")
     if st.sidebar.button("Logout"):
         st.session_state.logged_in = False
         st.rerun()
 
     st.header("👥 Attendance")
-    # Step set to 100 for students
     num_students = st.number_input("Number of Students Present", min_value=0, value=1000, step=100)
 
     st.header("📋 Select Daily Menu & Grams")
     col1, col2, col3, col4 = st.columns(4)
     
-    # Gram inputs set to 50
     carb_g = col1.number_input("Grams/Stud (Carb)", value=150, step=50)
     prot_g = col2.number_input("Grams/Stud (Prot)", value=100, step=50)
     veg_g = col3.number_input("Grams/Stud (Veg)", value=100, step=50)
