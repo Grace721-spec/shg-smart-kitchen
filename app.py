@@ -66,14 +66,16 @@ else:
 
     st.header("📊 Waste, Saved & Shortage Tracker")
     w1, w2 = st.columns(2)
-    food_wasted = w1.number_input("Food Wasted (Kgs)", min_value=0.0, step=0.5)
-    food_saved = w2.number_input("Food Saved (Kgs)", min_value=0.0, step=0.5)
+    # Using 0.05 step (which equals 50 grams in Kgs)
+    food_wasted = w1.number_input("Food Wasted (Kgs)", min_value=0.0, step=0.05)
+    food_saved = w2.number_input("Food Saved (Kgs)", min_value=0.0, step=0.05)
     shortage_reported = st.checkbox("Did food run out?")
     
     shortage_deficit = 0.0
     if shortage_reported:
-        initial = st.number_input("Original Amount Cooked (Kgs)", min_value=0.0, step=1.0)
-        needed = st.number_input("Amount Needed (Kgs)", min_value=0.0, step=1.0)
+        # Using 0.05 step (50 grams)
+        initial = st.number_input("Original Amount Cooked (Kgs)", min_value=0.0, step=0.05)
+        needed = st.number_input("Amount Needed (Kgs)", min_value=0.0, step=0.05)
         shortage_deficit = max(0.0, needed - initial)
         st.write(f"**Calculated Shortage: {shortage_deficit:.1f} Kgs**")
 
