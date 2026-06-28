@@ -7,7 +7,6 @@ if "logged_in" not in st.session_state:
 
 if not st.session_state.logged_in:
     st.title("🔐 Smart Kitchen Login")
-    
     school_map = {
         "Alliance Girls High School": "AGHS", "Alliance High School": "AHS",
         "Moi Girls Nairobi": "MGN", "Highridge Girls Secondary School": "HGSS",
@@ -19,7 +18,6 @@ if not st.session_state.logged_in:
         "State House Boys High School": "SHB", "State House Girls High School": "SHG",
         "The Aga Khan High School - Nairobi": "AKHS", "Upper Hill School": "UHS"
     }
-    
     school = st.selectbox("Select Your School", list(school_map.keys()))
     password = st.text_input("Enter Password", type="password")
     
@@ -41,18 +39,21 @@ else:
     st.header("📋 Select Daily Menu & Grams")
     col1, col2, col3, col4 = st.columns(4)
     
-    # Updated Carb Options with step=50
+    # Force rounding to nearest 50g using math
+    def get_50g_step(val):
+        return round(val / 50) * 50
+
     carb = col1.selectbox("Carb", ["None", "Maize Flour (Ugali)", "Rice", "Potatoes", "Maize (Dry)", "Wheat Flour (Chapati)"])
-    carb_g = col1.number_input("Grams/Stud (Carb)", value=150, step=50)
+    carb_g = get_50g_step(col1.number_input("Grams/Stud (Carb)", value=150, step=50))
     
     protein = col2.selectbox("Protein", ["None", "Beans", "Meat", "Eggs", "Lentils", "Green Grams", "Peas"])
-    prot_g = col2.number_input("Grams/Stud (Prot)", value=90, step=50)
+    prot_g = get_50g_step(col2.number_input("Grams/Stud (Prot)", value=100, step=50))
     
     veg = col3.selectbox("Veg", ["None", "Cabbage", "Spinach", "Kales"])
-    veg_g = col3.number_input("Grams/Stud (Veg)", value=80, step=50)
+    veg_g = get_50g_step(col3.number_input("Grams/Stud (Veg)", value=100, step=50))
     
     fruit = col4.selectbox("Fruit", ["None", "Mango", "Orange", "Banana"])
-    fruit_g = col4.number_input("Grams/Stud (Fruit)", value=120, step=50)
+    fruit_g = get_50g_step(col4.number_input("Grams/Stud (Fruit)", value=100, step=50))
 
     st.subheader("📊 Requirements (Calculated)")
     c1, c2, c3, c4 = st.columns(4)
@@ -79,7 +80,6 @@ else:
         shortage_deficit = max(0.0, needed_to_feed - initial_cooked)
         st.write(f"**Calculated Shortage Deficit: {shortage_deficit:.1f} Kgs**")
 
-    # --- Smart Feedback Section ---
     st.subheader("💡 Smart Kitchen Feedback")
     if shortage_reported and shortage_deficit > 0:
         st.warning(f"Oh no! We ran out. Please try adding at least {shortage_deficit:.1f} Kgs to your cooking for the next meal. You've got this!")
