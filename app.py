@@ -27,7 +27,6 @@ if not st.session_state.logged_in:
         st.session_state.logged_in = True
         st.rerun()
 
-    # --- Signature Footer ---
     st.markdown("---")
     st.markdown(
         """
@@ -41,7 +40,6 @@ if not st.session_state.logged_in:
     )
 
 else:
-    # --- Main App Content ---
     st.title("🥗 Smart Kitchen Manager")
     if st.sidebar.button("Logout"):
         st.session_state.logged_in = False
@@ -52,7 +50,6 @@ else:
 
     st.header("📋 Select Daily Menu & Grams")
     col1, col2, col3, col4 = st.columns(4)
-    
     carb_g = col1.number_input("Grams/Stud (Carb)", value=150, step=50)
     prot_g = col2.number_input("Grams/Stud (Prot)", value=100, step=50)
     veg_g = col3.number_input("Grams/Stud (Veg)", value=100, step=50)
@@ -67,9 +64,10 @@ else:
 
     st.divider()
 
-    st.header("📊 Waste & Shortage Tracker")
+    st.header("📊 Waste, Saved & Shortage Tracker")
     w1, w2 = st.columns(2)
     food_wasted = w1.number_input("Food Wasted (Kgs)", min_value=0.0, step=0.5)
+    food_saved = w2.number_input("Food Saved (Kgs)", min_value=0.0, step=0.5)
     shortage_reported = st.checkbox("Did food run out?")
     
     shortage_deficit = 0.0
@@ -81,11 +79,15 @@ else:
 
     st.subheader("💡 Smart Kitchen Feedback")
     if shortage_reported and shortage_deficit > 0:
-        st.warning(f"Oh no! We ran out. Please try adding {shortage_deficit:.1f} Kgs to your cooking for the next meal. You've got this!")
+        st.warning(f"⚠️ Shortage Alert: We ran out. Please try adding {shortage_deficit:.1f} Kgs to your next cook. You've got this!")
     elif food_wasted > 2.0:
-        st.info(f"We noticed leftovers of {food_wasted:.1f} Kgs. Try cooking slightly less next time. Keep refining your portions!")
+        st.info(f"♻️ Waste Detected: We had {food_wasted:.1f} Kgs of waste. Let's try cooking a bit less next time to save resources!")
+    elif food_saved > 0:
+        st.success(f"🌟 Amazing! You saved {food_saved:.1f} Kgs of food. Your efficiency is helping the school!")
+    elif food_wasted == 0 and shortage_deficit == 0:
+        st.success("✅ Perfect balance! You nailed the portions today. Continue in the same spirit!")
     else:
-        st.success("Great job! You hit a perfect balance today. Continue in the same spirit!")
+        st.write("Keep monitoring your portions—you're doing a great job managing the kitchen!")
 
     if st.button("Submit Daily Report"):
         st.success("Report submitted successfully!")
