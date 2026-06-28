@@ -79,15 +79,15 @@ else:
 
     st.subheader("💡 Smart Kitchen Feedback")
     if shortage_reported and shortage_deficit > 0:
-        st.warning(f"⚠️ Shortage Alert: We ran out. Please try adding {shortage_deficit:.1f} Kgs to your next cook. You've got this!")
+        st.warning(f"⚠️ Shortage Alert: We ran out. Please try adding {shortage_deficit:.1f} Kgs to your next cook.")
     elif food_wasted > 2.0:
-        st.info(f"♻️ Waste Detected: We had {food_wasted:.1f} Kgs of waste. Let's try cooking a bit less next time to save resources!")
+        st.info(f"♻️ Waste Detected: We had {food_wasted:.1f} Kgs of waste. Try cooking less next time.")
     elif food_saved > 0:
-        st.success(f"🌟 Amazing! You saved {food_saved:.1f} Kgs of food. Your efficiency is helping the school!")
+        st.success(f"🌟 Amazing! You saved {food_saved:.1f} Kgs of food. Great efficiency!")
     elif food_wasted == 0 and shortage_deficit == 0:
-        st.success("✅ Perfect balance! You nailed the portions today. Continue in the same spirit!")
+        st.success("✅ Perfect balance! You nailed the portions today.")
     else:
-        st.write("Keep monitoring your portions—you're doing a great job managing the kitchen!")
+        st.write("Keep monitoring your portions—you're doing a great job!")
 
     if st.button("Submit Daily Report"):
         st.success("Report submitted successfully!")
