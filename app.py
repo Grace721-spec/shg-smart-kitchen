@@ -2,16 +2,27 @@ import streamlit as st
 
 st.set_page_config(page_title="Smart Kitchen Manager", layout="centered")
 
-# --- Session State ---
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
-# --- Login Logic ---
 if not st.session_state.logged_in:
     st.title("🔐 Smart Kitchen Login")
-    # For testing, you can use any password, or keep your logic
+    school_map = {
+        "Alliance Girls High School": "AGHS", "Alliance High School": "AHS",
+        "Moi Girls Nairobi": "MGN", "Highridge Girls Secondary School": "HGSS",
+        "Jamhuri High School": "JHS", "Kenya High School": "KHS",
+        "Lenana School": "LS", "Limuru Girls' School": "LGS",
+        "Mang'u High School": "MHS", "Nairobi School": "NS",
+        "Pangani Girls High School": "PGHS", "St. George’s Girls’ Secondary School": "SGGS",
+        "Starehe Boys' Centre": "SBC", "Starehe Girls' Centre": "SGC",
+        "State House Boys High School": "SHB", "State House Girls High School": "SHG",
+        "The Aga Khan High School - Nairobi": "AKHS", "Upper Hill School": "UHS"
+    }
+    school = st.selectbox("Select Your School", list(school_map.keys()))
     password = st.text_input("Enter Password", type="password")
+    
     if st.button("Login"):
+        # You can add your secret key check here: if password == st.secrets[school_map[school]]:
         st.session_state.logged_in = True
         st.rerun()
 else:
@@ -26,7 +37,7 @@ else:
     st.header("📋 Select Daily Menu & Grams")
     col1, col2, col3, col4 = st.columns(4)
     
-    # Using step=50 directly in the widget - this is the stable, error-free way
+    # Native step=50 integration
     carb_g = col1.number_input("Grams/Stud (Carb)", value=150, step=50)
     prot_g = col2.number_input("Grams/Stud (Prot)", value=100, step=50)
     veg_g = col3.number_input("Grams/Stud (Veg)", value=100, step=50)
