@@ -49,6 +49,21 @@ else:
     num_students = st.number_input("Number of Students Present", min_value=0, value=1000, step=100) 
 
     st.header("📋 Select Daily Menu & Grams") 
+    
+    # --- Main Menu Dropdown Options ---
+    menu_categories = {
+        "Carbohydrates": ["Ugali", "Rice", "Ugali / White Rice", "Chapati", "Bread / Buns", "Potatoes", "Mashed Potatoes"],
+        "Proteins": ["Beans", "Ndengu (Green Grams)", "Githeri", "Beef Stew", "Fried Fish", "Eggs", "Lentils"],
+        "Vegetables": ["Kales (Sukuma Wiki)", "Cabbage", "Spinach", "Traditional Veg Mix (Managu/Karembere)", "Mixed Veg"],
+        "Fruits": ["Bananas", "Oranges", "Apples", "Mangoes", "Pineapple Slices", "Watermelon"]
+    }
+
+    menu_col1, menu_col2, menu_col3, menu_col4 = st.columns(4)
+    selected_carb = menu_col1.selectbox("Carb Choice", menu_categories["Carbohydrates"])
+    selected_prot = menu_col2.selectbox("Protein Choice", menu_categories["Proteins"])
+    selected_veg = menu_col3.selectbox("Veg Choice", menu_categories["Vegetables"])
+    selected_fruit = menu_col4.selectbox("Fruit Choice", menu_categories["Fruits"])
+
     col1, col2, col3, col4 = st.columns(4) 
     carb_g = col1.number_input("Grams/Stud (Carb)", value=150, step=50) 
     prot_g = col2.number_input("Grams/Stud (Prot)", value=100, step=50) 
@@ -64,42 +79,50 @@ else:
 
     st.divider() 
 
-    # --- ADDED FEATURE: Special Meal Tracking (Acid Reflux / H. pylori & Shortage Prevention) ---
-    st.header("🩺 Special Meal & Sensitive Diet Tracker")
-    st.write("Track alternative meals (like Cabbage & Soft Ugali/Rice) for students avoiding heavy githeri or beans.")
+    # --- UPDATED: Special Meal Tracking with Dropdowns & Calculations ---
+    st.header("🩺 Special Meal & Sensitive Diet Tracker (H. pylori / Acid Reflux)")
+    st.write("Plan safe alternatives using dropdown selections and precise gram calculations so sensitive students never run out.")
     
     sc_col1, sc_col2 = st.columns(2)
-    sensitive_students = sc_col1.number_input("Students on Sensitive Diet", min_value=0, value=25, step=5)
-    heavy_meal_today = sc_col2.selectbox("Today's Heavy Main Meal", ["Githeri", "Rice & Ndengu", "Rice & Beans", "Other Heavy Meal"])
+    sensitive_students = sc_col1.number_input("Number of Sensitive Students", min_value=0, value=25, step=5)
+    heavy_meal_today = sc_col2.selectbox("Today's Heavy Main Meal", ["Githeri", "Rice & Ndengu", "Rice & Beans", "Heavy Spiced Stew", "Other Heavy Meal"])
 
-    s_carb_col, s_veg_col = st.columns(2)
-    sensitive_carb_g = s_carb_col.number_input("Grams/Stud (Safe Carb - e.g. Ugali/Rice)", value=150, step=50)
-    sensitive_veg_g = s_veg_col.number_input("Grams/Stud (Safe Veg - e.g. Cabbage)", value=100, step=50)
+    # Safe alternative category options
+    safe_carb_options = ["Soft Ugali", "White Rice", "Boiled Potatoes", "Mashed Potatoes", "Plain Bread / Buns"]
+    safe_veg_options = ["Plain Steamed Cabbage", "Boiled Carrots", "Spinach (Mild)", "Plain Zucchini"]
 
-    calc_sensitive_carb = (sensitive_students * sensitive_carb_g) / 1000
-    calc_sensitive_veg = (sensitive_students * sensitive_veg_g) / 1000
+    drop_col1, drop_col2 = st.columns(2)
+    selected_safe_carb = drop_col1.selectbox("Select Safe Alternative Carb", safe_carb_options)
+    selected_safe_veg = drop_col2.selectbox("Select Safe Alternative Veg", safe_veg_options)
 
+    gram_col1, gram_col2 = st.columns(2)
+    safe_carb_g = gram_col1.number_input("Grams/Stud (Safe Carb)", value=150, step=50)
+    safe_veg_g = gram_col2.number_input("Grams/Stud (Safe Veg)", value=100, step=50)
+
+    # Calculated requirements for the sensitive group
+    calc_sensitive_carb = (sensitive_students * safe_carb_g) / 1000
+    calc_sensitive_veg = (sensitive_students * safe_veg_g) / 1000
+
+    st.subheader("📊 Sensitive Diet Requirements (Calculated)")
     m1, m2 = st.columns(2)
-    m1.metric("Safe Carb Needed", f"{calc_sensitive_carb:.1f} Kgs")
-    m2.metric("Plain Cabbage Needed", f"{calc_sensitive_veg:.1f} Kgs")
+    m1.metric(f"Safe Carb ({selected_safe_carb}) Needed", f"{calc_sensitive_carb:.1f} Kgs")
+    m2.metric(f"Safe Veg ({selected_safe_veg}) Needed", f"{calc_sensitive_veg:.1f} Kgs")
 
-    sensitive_shortage = st.checkbox("Did safe alternatives (Cabbage/Safe Carb) run out? (Preventing the 'Plain Buns' trap)")
+    sensitive_shortage = st.checkbox("Did safe alternatives run out? (Preventing the 'Plain Buns' trap)")
     if sensitive_shortage:
         st.error("⚠️ Alternative Food Shortage Alert: Safe food ran out for sensitive students. Increase portion preparation next time to avoid students eating dry buns or going hungry!")
 
     st.divider()
-    # --- END OF ADDED FEATURE ---
+    # --- END OF UPDATED FEATURE ---
 
     st.header("📊 Waste, Saved & Shortage Tracker") 
     w1, w2 = st.columns(2) 
-    # Updated to step=50 as requested 
     food_wasted = w1.number_input("Food Wasted (Kgs)", min_value=0.0, step=50.0) 
     food_saved = w2.number_input("Food Saved (Kgs)", min_value=0.0, step=50.0) 
     shortage_reported = st.checkbox("Did food run out?") 
      
     shortage_deficit = 0.0 
     if shortage_reported: 
-        # Updated to step=50 as requested 
         initial = st.number_input("Original Amount Cooked (Kgs)", min_value=0.0, step=50.0) 
         needed = st.number_input("Amount Needed (Kgs)", min_value=0.0, step=50.0) 
         shortage_deficit = max(0.0, needed - initial) 
@@ -118,4 +141,4 @@ else:
         st.write("Keep monitoring your portions—you're doing a great job!") 
 
     if st.button("Submit Daily Report"): 
-        st.success("Report submitted successfully!")
+        st.success("Report successfully submitted!")
