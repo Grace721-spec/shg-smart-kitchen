@@ -64,16 +64,38 @@ else:
 
     st.divider()
 
+    # --- NEW FEATURE: Special Meal & Acid/H. pylori Tracker ---
+    st.header("🩺 Special Dietary Tracker (Acid Reflux & H. pylori)")
+    st.write("Plan safe alternatives (e.g., Cabbage/Ugali/Rice) for students who cannot handle heavy beans, githeri, or spice.")
+    
+    col_spec1, col_spec2 = st.columns(2)
+    sensitive_students = col_spec1.number_input("Students on Sensitive Diet", min_value=0, value=25, step=5)
+    main_meal_type = col_spec2.selectbox("Today's Heavy Main Meal", ["Githeri", "Rice & Ndengu (Green Grams)", "Rice & Beans", "Heavy Spiced Stew", "Other"])
+
+    # Smart mapping for safe alternatives
+    recommended_safe_carb = "Soft Ugali / White Rice"
+    recommended_safe_veg = "Plain Steamed Cabbage"
+    
+    st.info(f"💡 **Kitchen Substitution Plan:** For the {sensitive_students} students avoiding {main_meal_type}, automatically prepare: **{recommended_safe_carb} + {recommended_safe_veg}**.")
+    
+    safe_carb_qty = st.number_input("Safe Carb Prep Qty for Sensitive Group (Kgs)", min_value=0.0, value=5.0, step=1.0)
+    safe_veg_qty = st.number_input("Safe Veg (Cabbage) Prep Qty for Sensitive Group (Kgs)", min_value=0.0, value=4.0, step=1.0)
+    
+    sensitive_shortage = st.checkbox("Did safe alternatives (Cabbage/Safe Carb) run out? (Preventing the 'Plain Buns' trap)")
+    if sensitive_shortage:
+        st.error("⚠️ Alternative Food Depleted! Cabbage or safe starch ran out for sensitive students. Please increase stock allocation for the next cooking cycle to keep students healthy.")
+
+    st.divider()
+    # --- END OF NEW FEATURE ---
+
     st.header("📊 Waste, Saved & Shortage Tracker")
     w1, w2 = st.columns(2)
-    # Updated to step=50 as requested
     food_wasted = w1.number_input("Food Wasted (Kgs)", min_value=0.0, step=50.0)
     food_saved = w2.number_input("Food Saved (Kgs)", min_value=0.0, step=50.0)
     shortage_reported = st.checkbox("Did food run out?")
     
     shortage_deficit = 0.0
     if shortage_reported:
-        # Updated to step=50 as requested
         initial = st.number_input("Original Amount Cooked (Kgs)", min_value=0.0, step=50.0)
         needed = st.number_input("Amount Needed (Kgs)", min_value=0.0, step=50.0)
         shortage_deficit = max(0.0, needed - initial)
