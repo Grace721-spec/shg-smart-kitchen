@@ -50,12 +50,12 @@ else:
 
     st.header("📋 Select Daily Menu & Grams") 
     
-    # --- Main Menu Dropdown Options ---
+    # --- Main Menu Dropdown Options (with "None" added) ---
     menu_categories = {
-        "Carbohydrates": ["Ugali", "Rice", "Ugali / White Rice", "Chapati", "Bread / Buns", "Potatoes", "Mashed Potatoes"],
-        "Proteins": ["Beans", "Ndengu (Green Grams)", "Githeri", "Beef Stew", "Fried Fish", "Eggs", "Lentils"],
-        "Vegetables": ["Kales (Sukuma Wiki)", "Cabbage", "Spinach", "Traditional Veg Mix (Managu/Karembere)", "Mixed Veg"],
-        "Fruits": ["Bananas", "Oranges", "Apples", "Mangoes", "Pineapple Slices", "Watermelon"]
+        "Carbohydrates": ["None", "Ugali", "Rice", "Ugali / White Rice", "Chapati", "Bread / Buns", "Potatoes", "Mashed Potatoes"],
+        "Proteins": ["None", "Beans", "Ndengu (Green Grams)", "Githeri", "Beef Stew", "Fried Fish", "Eggs", "Lentils"],
+        "Vegetables": ["None", "Kales (Sukuma Wiki)", "Cabbage", "Spinach", "Traditional Veg Mix (Managu/Karembere)", "Mixed Veg"],
+        "Fruits": ["None", "Bananas", "Oranges", "Apples", "Mangoes", "Pineapple Slices", "Watermelon"]
     }
 
     menu_col1, menu_col2, menu_col3, menu_col4 = st.columns(4)
@@ -79,17 +79,17 @@ else:
 
     st.divider() 
 
-    # --- UPDATED: Special Meal Tracking with Dropdowns & Calculations ---
+    # --- Special Meal Tracking (with "None" added to dropdowns) ---
     st.header("🩺 Special Meal & Sensitive Diet Tracker (H. pylori / Acid Reflux)")
     st.write("Plan safe alternatives using dropdown selections and precise gram calculations so sensitive students never run out.")
     
     sc_col1, sc_col2 = st.columns(2)
     sensitive_students = sc_col1.number_input("Number of Sensitive Students", min_value=0, value=25, step=5)
-    heavy_meal_today = sc_col2.selectbox("Today's Heavy Main Meal", ["Githeri", "Rice & Ndengu", "Rice & Beans", "Heavy Spiced Stew", "Other Heavy Meal"])
+    heavy_meal_today = sc_col2.selectbox("Today's Heavy Main Meal", ["None", "Githeri", "Rice & Ndengu", "Rice & Beans", "Heavy Spiced Stew", "Other Heavy Meal"])
 
-    # Safe alternative category options
-    safe_carb_options = ["Soft Ugali", "White Rice", "Boiled Potatoes", "Mashed Potatoes", "Plain Bread / Buns"]
-    safe_veg_options = ["Plain Steamed Cabbage", "Boiled Carrots", "Spinach (Mild)", "Plain Zucchini"]
+    # Safe alternative category options with "None"
+    safe_carb_options = ["None", "Soft Ugali", "White Rice", "Boiled Potatoes", "Mashed Potatoes", "Plain Bread / Buns"]
+    safe_veg_options = ["None", "Plain Steamed Cabbage", "Boiled Carrots", "Spinach (Mild)", "Plain Zucchini"]
 
     drop_col1, drop_col2 = st.columns(2)
     selected_safe_carb = drop_col1.selectbox("Select Safe Alternative Carb", safe_carb_options)
@@ -112,8 +112,7 @@ else:
     if sensitive_shortage:
         st.error("⚠️ Alternative Food Shortage Alert: Safe food ran out for sensitive students. Increase portion preparation next time to avoid students eating dry buns or going hungry!")
 
-    st.divider()
-    # --- END OF UPDATED FEATURE ---
+    st.divider() 
 
     st.header("📊 Waste, Saved & Shortage Tracker") 
     w1, w2 = st.columns(2) 
